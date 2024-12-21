@@ -3,18 +3,26 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Button, Card } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { addTocart } from "../store/cartSlice";
 const Products = () => {
+  const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
   const fetchproducts = async () => {
     const response = await fetch("https://fakestoreapi.com/products");
     const products = await response.json();
-    console.log(products);
+    // console.log(products);
     setProducts(products);
   };
 
   useEffect(() => {
     fetchproducts();
   }, []);
+
+  const handleAdd = (product) => {
+    dispatch(addTocart(product));
+    console.log(product);
+  };
 
   return (
     <>
@@ -50,7 +58,12 @@ const Products = () => {
             <img src={product.image} alt="" />
             <h4>{product.title}</h4>
             <h5>{product.price}</h5>
-            <button className="btn btn-primary">Add to cart</button>
+            <button
+              className="btn btn-primary"
+              onClick={() => handleAdd(product)}
+            >
+              Add to cart
+            </button>
           </div>
         ))}
       </div>

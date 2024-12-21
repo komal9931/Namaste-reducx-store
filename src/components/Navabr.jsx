@@ -4,8 +4,11 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 const Header = () => {
+  let item = useSelector((state) => state.cart);
+  // console.log(item);
   return (
     <>
       <Navbar expand="lg" className="bg-warning">
@@ -23,7 +26,7 @@ const Header = () => {
               </NavLink>
               <NavLink className="nav-link" to="/cart">
                 Cart
-                <span className="cartCount"> items: 0</span>
+                <span className="cartCount"> items: {item.length}</span>
               </NavLink>
             </Nav>
             <Form className="d-flex">
