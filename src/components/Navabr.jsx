@@ -8,6 +8,8 @@ import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 const Header = () => {
   let item = useSelector((state) => state.cart);
+  let allproducts = useSelector((state) => state.products);
+  console.log(allproducts);
   // console.log(item);
   return (
     <>

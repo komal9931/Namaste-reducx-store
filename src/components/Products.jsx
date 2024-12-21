@@ -3,26 +3,36 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Button, Card } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addTocart } from "../store/cartSlice";
+import { fetchproducts, STATUSES } from "../store/productSlice";
 const Products = () => {
   const dispatch = useDispatch();
-  const [products, setProducts] = useState([]);
-  const fetchproducts = async () => {
-    const response = await fetch("https://fakestoreapi.com/products");
-    const products = await response.json();
-    // console.log(products);
-    setProducts(products);
-  };
+  const { data: products, status } = useSelector((state) => state.products);
+  console.log(status);
+  // const [products, setProducts] = useState([]);
+  // const fetchproducts = async () => {
+  // const response = await fetch("https://fakestoreapi.com/products");
+  // const products = await response.json();
+  // // console.log(products);
+  // setProducts(products);
+  // };
 
   useEffect(() => {
-    fetchproducts();
+    dispatch(fetchproducts());
   }, []);
 
   const handleAdd = (product) => {
     dispatch(addTocart(product));
     console.log(product);
   };
+  if (status === STATUSES.LOADING) {
+    return <h2>Loading....</h2>;
+  }
+
+  if (status === STATUSES.ERROR) {
+    return <h2>Error fetching products</h2>;
+  }
 
   return (
     <>
@@ -52,7 +62,7 @@ const Products = () => {
         </Row>
       </Container> */}
 
-      <div className="productsWrapper">
+      <div className="productsWrapper mt-5">
         {products.map((product) => (
           <div className="card" key={product.id}>
             <img src={product.image} alt="" />
